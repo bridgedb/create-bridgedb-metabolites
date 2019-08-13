@@ -120,6 +120,18 @@ def cleanKey(String inchikey) {
    cleanKey
 }
 
+def addRDF(GdbConstruct database, String dbName, String key, String value){
+  id = value.trim()
+  if(id.length() > 255){
+    println "Warn: attribute does not fit the Derby SQL schema: $id"
+  }
+  else if(id.length() > 0){
+    if (database.setRDF(dbName, key, value) !=0 ) {
+      println"Error (addRDF): "+ database.recentException.getMessage() 
+    }
+  }
+}
+
 // read the secondary ChEBI identifiers
 deprChEBIFile = new File("deprecated_ChEBI.csv")
 deprChEBIIDs = new java.util.HashSet();
@@ -296,6 +308,14 @@ chebiNames.eachLine { line,number ->
   if (counter % commitInterval == 0) database.commit()
 }
 unitReport << "  <testcase classname=\"ChEBICreation\" name=\"NamesFound\"/>\n"
+
+addRDF(database ,(ref.getDataSource).getFullName, "dcterms:title", "Chemical Entities of Biological Interest (ChEBI)@en ;")
+addRDF(database ,(ref.getDataSource).getFullName, "dcterms:description", "Chemical Entities of Biological Interest (ChEBI) is a freely available dictionary of molecular entities focused on &#39;small&#39; chemical compounds.@en ;")
+addRDF(database ,(ref.getDataSource).getFullName, "foaf:homepage", "<http://www.ebi.ac.uk/chebi/>")
+addRDF(database ,(ref.getDataSource).getFullName, "dcterms:publisher", "http://www.ebi.ac.uk")
+addRDF(database ,(ref.getDataSource).getFullName, "void:dataDump", "<ftp://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi.owl>")
+addRDF(database ,(ref.getDataSource).getFullName, "dcterms:license", "<http://creativecommons.org/licenses/by-sa/3.0/>")
+
 // load the mappings
 def mappedIDs = new File('data/chebi_database_accession.tsv')
 mappedIDs.eachLine { line,number ->
