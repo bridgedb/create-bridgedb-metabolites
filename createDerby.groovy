@@ -7,7 +7,7 @@ import groovy.util.slurpersupport.NodeChildren;
 import org.bridgedb.IDMapperException;
 import org.bridgedb.DataSource;
 import org.bridgedb.Xref;
-import org.bridgedb.bio.BioDataSource;
+import org.bridgedb.bio.DataSourceTxt;
 import org.bridgedb.rdb.construct.DBConnector;
 import org.bridgedb.rdb.construct.DataDerby;
 import org.bridgedb.rdb.construct.GdbConstruct;
@@ -43,13 +43,15 @@ blacklist.add("HMDB00912") // see bug #6
 blacklist.add("HMDB0006316") //wrong mappings to ChEBI, Pubchem Compound = 0
 blacklist.add("HMDB06316") //wrong mappings to ChEBI, Pubchem Compound = 0
 
+DataSourceTxt.init()
 //inchiDS = DataSource.register ("Cin", "InChI").asDataSource()
+hmdbDS = DataSource.getExistingBySystemCode ("Ch")
 inchikeyDS = DataSource.register ("Ik", "InChIKey").asDataSource()
 chemspiderDS = DataSource.register ("Cs", "Chemspider").asDataSource()
-casDS = BioDataSource.CAS
-pubchemDS = BioDataSource.PUBCHEM_COMPOUND
-chebiDS = BioDataSource.CHEBI
-keggDS = BioDataSource.KEGG_COMPOUND
+casDS = DataSource.getExistingBySystemCode("Ca")
+pubchemDS = DataSource.getExistingByFullName("PubChem-compound")
+chebiDS = DataSource.getExistingByFullName("ChEBI")
+keggDS = DataSource.getExistingByFullName("KEGG Compound")
 keggDrugDS = DataSource.register ("Kd", "KEGG Drug").asDataSource()
 wikidataDS = DataSource.register ("Wd", "Wikidata").asDataSource()
 lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
@@ -164,8 +166,8 @@ if (hmdbFile.exists()) {
          println "Error (incorrect HMDB): " + rootid
        }
        // println "HMDB old: ${rootid} -> ${newid}"
-       Xref ref = new Xref(rootid, BioDataSource.HMDB, false);
-       Xref newref = (newid == null) ? null : new Xref(newid, BioDataSource.HMDB);
+       Xref ref = new Xref(rootid, hmdbDS, false);
+       Xref newref = (newid == null) ? null : new Xref(newid, hmdbDS);
        if (!genesDone.contains(ref.toString())) {
          addError = database.addGene(ref);
          if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
@@ -196,7 +198,11 @@ if (hmdbFile.exists()) {
        addAttribute(database, ref, "Synonym", rootNode.iupac_name.toString());
   
        // add the SMILES, InChIKey, etc
-       addAttribute(database, ref, "InChI", cleanKey(rootNode.inchi.toString()));
+       if (rootNode.inchi.toString().length() <= 255) {
+         addAttribute(database, ref, "InChI", cleanKey(rootNode.inchi.toString()));
+       } else {
+         // InChI is too long to fit as attribute
+       }
        key = cleanKey(rootNode.inchikey.toString().trim());
        if (key.length() == 27) {
          addAttribute(database, ref, "InChIKey", key);
