@@ -60,7 +60,7 @@ dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 drugbankDS = DataSource.register ("Dr", "DrugBank").asDataSource() 
 iupharDS = DataSource.register ("Gpl", "Guide to Pharmacology").asDataSource() 
 chemblDS = DataSource.register ("Cl", "ChEMBL compound").asDataSource() 
-meshDS = DataSource.register ("Me", "MeSH descriptor").asDataSource() //Syscode part of BridgeDb library (not released officially yet).
+meshDS = DataSource.register ("Me", "MeSH").asDataSource() //Syscode part of BridgeDb library (not released officially yet).
 //vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
 chebiVersionFile = new File('data/chebi.version')
