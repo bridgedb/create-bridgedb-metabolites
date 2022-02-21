@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the below paper."
+title: create-bridgedb-metabolites
+url: "https://github.com/bridgedb/create-bridgedb-metabolites"
+preferred-citation:
+  type: article
+  title: "The BridgeDb framework: standardized access to gene, protein and metabolite identifier mapping services"
+  authors:
+    - family-names: Van lersel
+      given-names: Martijn P.
+    - family-names: Pico
+      given-names: Alexander R.
+    - family-names: Kelder
+      given-names: Thomas
+    - family-names: Gao
+      given-names: Jianjiong
+    - family-names: Ho
+      given-names: Isaac
+    - family-names: Hanspers
+      given-names: Kristina
+    - family-names: Conklin
+      given-names: Bruce R.
+    - family-names: Evelo
+      given-names: Chris T.
+    - family-names: Verhagen
+      given-names: Lisa M.
+    - family-names: Koehorst
+      given-names: Jasper J.
+  doi: 10.1186/1471-2105-11-5
+  year: 2010
+  month: 1
+  day: 4
+  journal: BMC Bioinformatics
+  volume: 11
+  issue: 5
+  url: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-11-5
