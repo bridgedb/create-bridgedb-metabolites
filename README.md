@@ -1,3 +1,5 @@
+FROZEN!! This is the last version of create-bridgedb-metabolites, which can be used to create a metabolite mapping file which is compatible with PathVisio 3. The last available version of this mapping file can be found here: https://doi.org/10.6084/m9.figshare.20260911
+
 Create BridgeDb Identity Mapping files
 ======================================
 
